@@ -1,38 +1,30 @@
 #include <stdio.h>
 
 /**
- * main - Prints all possible different combination of three
- *        digits separated by ',' followed by a space
+ * main - Prints all possible different combination of two
+ *        two-digits numbers separated by ',' followed by a space
  *
  * Return: Always 0 (Success)
  */
 int main(void)
 {
-	int i, j, k, l;
-
-	for (i = 48; i < 58; i++)
+	int k, l;
+	
+	for (k = 0; k < 99; k++)
 	{
-		for (j = 48; j < 57; j++)
+		for (l = k + 1; l <= 99; l++)
 		{
-			for (k = i; k < 58; k++)
-			{
-				for (l = j; l < 58; l++)
-				{
-					if (i == k && j == l)
-						continue;
-					putchar (i);
-					putchar (j);
-					putchar (' ');
-					putchar (k);
-					putchar (l);
-					if (i == 57 && j == 56 && l == 57)
-						break;
-					putchar (',');
-					putchar (' ');
-				}
-			}
+			putchar ((k / 10) + '0');
+			putchar ((k % 10) + '0');
+			putchar (' ');
+			putchar ((l / 10) + '0');
+			putchar ((l % 10) + '0');
+ 			if (k == 98 && l == 99)
+				break;
+			putchar (',');
+			putchar (' ');
 		}
 	}
-		putchar ('\n');
+	putchar ('\n');
 	return (0);
 }
