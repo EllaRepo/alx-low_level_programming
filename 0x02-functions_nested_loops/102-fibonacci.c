@@ -28,5 +28,5 @@ int main(void)
 		current = tmp;
 	}
 	printf("\n");
-	return (1);
+	return (0);
 }
