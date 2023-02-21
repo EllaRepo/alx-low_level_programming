@@ -34,7 +34,7 @@ void print_to_98(int n)
 				_putchar(((j - 100) / 10) + '0');
 				_putchar((j % 10) + '0');
 			}
-			if (j > 9)
+			else if (j > 9)
 			{
 				_putchar((j / 10) + '0');
 				_putchar((j % 10) + '0');
