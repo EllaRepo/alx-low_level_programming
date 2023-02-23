@@ -24,12 +24,9 @@ void print_number(int n)
 		i /= 10;
 	}
 	i = n;
-	while (j > 1)
+	for (; j >= 1; j /= 10)
 	{
-		_putchar((i / j) + '0');
-		i = i - ((i / j) * j);
-		j /= 10;
+		_putchar(((i / j) % 10) + '0');
 	}
-	_putchar((n % 10) + '0');
 }
 
