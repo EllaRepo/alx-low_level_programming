@@ -6,7 +6,7 @@
  */
 char _atoi(char *s)
 {
-	int n, sign, i;
+	unsigned int n, sign, i;
 	char *c;
 
 	if (*s == '\0')
@@ -15,9 +15,11 @@ char _atoi(char *s)
 	sign = 1;
 	c = s;
 	while (*c != '\0' && (*c < '0' || *c > '9'))
+	{
+		if (*c == '-')
+			sign *= -1;
 		c++;
-	if (c[-1] == '-')
-		sign = -1;
+	}
 	for (n = 0; *c != '\0' && *c >= '0' && *c <= '9'; i++)
 	{
 		n = n * 10 + (*c - '0');
