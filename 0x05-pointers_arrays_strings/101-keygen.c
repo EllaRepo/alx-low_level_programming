@@ -9,19 +9,22 @@
  */
 int main(void)
 {
-	long n, chksum;
+	int n, chksum;
 	char c;
 
 	chksum = 0xad4;
 	srand(time(0));
+	n = 0;
 	while (chksum - n > 127)
 	{
 		c = rand() % 128;
+		if ( c == 0)
+			continue;
 		printf("%c", c);
 		n += c;
 	}
-	c = chksum - n;
-	printf("%c", c);
+	if (chksum - n)
+		printf("%c", chksum - n);
 	printf("\n");
 
 	return (0);
