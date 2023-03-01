@@ -18,6 +18,8 @@ char *cap_string(char *s)
 		{
 			if (*(str + 1) >= 'a' && *(str + 1) <= 'z')
 				*(str + 1) -= 32;
+			if (*str == '\t')
+				*str = ' ';
 		}
 		str++;
 	}
