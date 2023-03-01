@@ -18,8 +18,6 @@ char *cap_string(char *s)
 		{
 			if (*(str + 1) >= 'a' && *(str + 1) <= 'z')
 				*(str + 1) -= 32;
-			if (*str == '\t')
-				*str = ' ';
 		}
 		str++;
 	}
@@ -39,13 +37,12 @@ int isseparator(char c)
 	char separators[] = {' ', '\t', '\n', ',', ';', '.', '!', '?', '"',
 		'(', ')', '{', '}', '\0'};
 
-	char *s = separators;
+	int i;
 
-	while (*s)
+	for (i = 0; separators[i] != '\0'; i++)
 	{
-		if (*s == c)
+		if (separators[i] == c)
 			return (1);
-		s++;
 	}
 
 	return (0);
