@@ -1,5 +1,5 @@
 /**
- * _strcat - Concatenates two strings
+ * _strncat - Concatenates two strings
  * @dest: A char pointer pointing to the destination string
  * @src: A char pointer pointing to the source string
  * @n: Number of bytes from src
