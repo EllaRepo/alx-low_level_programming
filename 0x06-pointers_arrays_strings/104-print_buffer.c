@@ -10,12 +10,14 @@
 void print_buffer(char *b, int size)
 {
 	int i, j, k;
-	char *buff;
-	char str[10] = "";
+	char *buff, str[10] = "";
 
-	buff = b;
-	j = 0;
-	for (i = 1; i <= size; i++, buff++)
+	if (size <= 0)
+	{
+		printf("\n");
+		return;
+	}
+	for (i = 1, j = 0, buff = b; i <= size; i++, buff++, j++)
 	{
 		if (i % 10 == 1)
 			printf("%08x:", i - 1);
@@ -46,6 +48,5 @@ void print_buffer(char *b, int size)
 				printf("%c", str[k]);
 			printf("\n");
 		}
-		j++;
 	}
 }
