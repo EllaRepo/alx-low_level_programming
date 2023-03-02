@@ -21,7 +21,7 @@ void print_buffer(char *b, int size)
 			printf("%08x:", i - 1);
 		if (i % 2)
 			printf(" ");
-		if (*buff > 31 && *buff != 127)
+		if (*buff > 31)
 			str[j] = *buff;
 		else
 			str[j] = 0x2E;
