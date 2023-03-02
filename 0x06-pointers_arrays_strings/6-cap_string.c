@@ -20,7 +20,10 @@ char *cap_string(char *s)
 			if (separators[i] == *str)
 			{
 				if (*(str + 1) >= 'a' && *(str + 1) <= 'z')
+				{
 					*(str + 1) -= 32;
+					break;
+				}
 			}
 		}
 		str++;
