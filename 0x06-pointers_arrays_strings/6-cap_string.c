@@ -12,7 +12,7 @@ char *cap_string(char *s)
 	int i;
 
 	str = s;
-
+	*str = (*str >= 'a' && *str <= 'z') ? *str - 32 : *str;
 	while (*str != '\0')
 	{
 		for (i = 0; separators[i] != '\0'; i++)
