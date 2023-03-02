@@ -23,10 +23,10 @@ void print_buffer(char *b, int size)
 			printf("%08x:", i - 1);
 		if (i % 2)
 			printf(" ");
-		if (*buff > 31)
-			str[j] = *buff;
-		else
+		if (*buff < 32 || *buff > 126)
 			str[j] = 0x2E;
+		else
+			str[j] = *buff;
 		printf("%02x", *buff);
 		if (j == 9)
 		{
