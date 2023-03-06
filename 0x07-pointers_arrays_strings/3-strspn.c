@@ -8,19 +8,19 @@
  */
 unsigned int _strspn(char *s, char *accept)
 {
-	unsigned int i, prefix;
+	int i, prefix;
 
-	for (prefix = 0; *accept != '\0'; accept++)
+	for (prefix = -1; *accept != '\0'; accept++)
 	{
 		for (i = 0; s[i] != '\0'; i++)
 		{
 			if (s[i] == *accept)
 			{
-				prefix = i > prefix ? i : prefix;
+				prefix = i > prefix || prefix == -1 ?
+					i : prefix;
 				break;
 			}
 		}
 	}
-	return (prefix ? prefix + 1 : prefix);
+	return (prefix == -1 ? 0 : prefix + 1);
 }
-
