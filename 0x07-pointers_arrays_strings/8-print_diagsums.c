@@ -20,7 +20,7 @@ void print_diagsums(int *a, int size)
 
 	for (r = 0; r < size; r++)
 	{
-		for (c = 0; c < 8; c++)
+		for (c = 0; c < size; c++)
 		{
 			if (r == c)
 				princ += *(a + (r * size + c));
