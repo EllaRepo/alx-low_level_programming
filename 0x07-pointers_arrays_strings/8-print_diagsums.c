@@ -12,6 +12,9 @@ void print_diagsums(int *a, int size)
 {
 	int princ, secon, r, c;
 
+	if (size <= 0)
+		return;
+
 	princ = 0;
 	secon = 0;
 
