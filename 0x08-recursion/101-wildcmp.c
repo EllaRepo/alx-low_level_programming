@@ -44,7 +44,6 @@ int wildcmp(char *s1, char *s2)
 	{
 		tmp1 = s1 + 1, tmp2 = s2 + 2, c1 = c2 = 0;
 		c1 = is_unique(tmp1, *s1), c2 = is_unique(tmp2, *s1);
-		
 		if (c1 == c2 || c1 == 0)
 		{
 			s2++;
