@@ -1,27 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-
-/**
-  * get_change - calculates the minimum number of coins to make
-  * @money: The money
-  *
-  * Return: The resulting change
-  */
-int get_change(int money)
-{
-	if (money == 0)
-		return (0);
-	if (money >= 25)
-		return (1 + get_change(money - 25));
-	if (money >= 10)
-		return (1 + get_change(money - 10));
-	if (money >= 5)
-		return (1 + get_change(money - 5));
-	if (money >= 2)
-		return (1 + get_change(money - 2));
-	return (1 + get_change(money - 1));
-}
 
 /**
  * main - Prints the minimum number of coins to make change for
@@ -34,9 +12,9 @@ int get_change(int money)
  */
 int main(int argc, char *argv[])
 {
-	int cents;
+	int cents, count;
 
-	if (argc != 2 || strcmp(argv[0], "./change") != 0)
+	if (argc != 2)
 	{
 		printf("Error\n");
 		return (1);
@@ -44,13 +22,25 @@ int main(int argc, char *argv[])
 	cents = atoi(argv[1]);
 	if (cents <= 0)
 	{
-		printf("0\n");
+		cents = 0;
 	}
 	else
 	{
-		cents = get_change(cents);
-		printf("%d\n", cents);
+		count = 0;
+		while (cents)
+		{
+			if (cents >= 25)
+				cents -= 25, count += 1;
+			else if (cents >= 10)
+				cents -= 10, count += 1;
+			else if (cents >= 5)
+				cents -= 5, count += 1;
+			else if (cents >= 2)
+				cents -= 2, count += 1;
+			else
+				cents -= 1, count += 1;
+		}
 	}
-
+	printf("%d\n", count);
 	return (0);
 }
