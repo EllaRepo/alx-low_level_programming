@@ -48,8 +48,8 @@ int main(int argc, char *argv[])
 	else
 	{
 		cents = get_change(cents);
+		printf("%d\n", cents);
 	}
-	printf("%d\n", cents);
 
 	return (0);
 }
