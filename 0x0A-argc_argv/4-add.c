@@ -18,10 +18,9 @@ int main(int argc, char *argv[])
 		printf("0\n");
 		return (0);
 	}
-	argv++;
-	for (sum = 0; *argv != NULL; argv++)
+	for (sum = 0, argv++; *argv != NULL; argv++)
 	{
-		if (atoi(*argv))
+		if (atoi(*argv) > 0)
 		{
 			sum += atoi(*argv);
 		}
