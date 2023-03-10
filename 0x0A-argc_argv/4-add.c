@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 	for (sum = 0, tmp = 0, argv++; *argv != NULL; argv++)
 	{
 		tmp = atoi(*argv);
-		if (tmp ==  0 && **argv != '0')
+		if (tmp ==  0)
 		{
 			printf("Error\n");
 			return (1);
