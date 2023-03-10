@@ -11,24 +11,22 @@
  */
 int main(int argc, char *argv[])
 {
-	int sum;
+	int sum, tmp;
 
 	if (argc == 1)
 	{
 		printf("0\n");
 		return (0);
 	}
-	for (sum = 0, argv++; *argv != NULL; argv++)
+	for (sum = 0, tmp = 0, argv++; *argv != NULL; argv++)
 	{
-		if (atoi(*argv) > 0)
-		{
-			sum += atoi(*argv);
-		}
-		else
+		tmp = atoi(*argv);
+		if (tmp ==  0 && **argv != '0')
 		{
 			printf("Error\n");
 			return (1);
 		}
+			sum += tmp > 0 ? tmp : 0;
 	}
 	printf("%d\n", sum);
 
