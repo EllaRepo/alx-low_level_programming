@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /**
   * get_change - calculates the minimum number of coins to make
@@ -35,7 +36,7 @@ int main(int argc, char *argv[])
 {
 	int cents;
 
-	if (argc != 2)
+	if (argc != 2 || strcmp(argv[0], "./change") != 0)
 	{
 		printf("Error\n");
 		return (1);
