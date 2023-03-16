@@ -1,19 +1,4 @@
 #include <stdlib.h>
-/**
- * _strlen - Returnns the length of a string
- * @s: Pointer to a characher
- *
- * Return: The length of the string.
- */
-int _strlen(char *s)
-{
-	int len;
-
-	len = 0;
-	while (*s++ != '\0')
-		len++;
-	return (len);
-}
 
 /**
  * string_nconcat - Concatenates two strings
@@ -31,10 +16,12 @@ char *string_nconcat(char *s1, char *s2, unsigned int n)
 
 	if (s1 == NULL && s2 == NULL)
 		return ("");
-	ptr = s1;
-	len1 = _strlen(ptr);
-	ptr = s2;
-	len2 = _strlen(ptr);
+	ptr = s1, len1 = 0;
+	while (*ptr++ != '\0')
+		len1++;
+	ptr = s2, len2 = 0;
+	while (*ptr++ != '\0')
+		len2++;
 	len2 = n > len2 ? len2 : n;
 
 	ptr = malloc(sizeof(char) * (len1 + len2 + 1));
