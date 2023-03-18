@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include "main.h"
 
@@ -144,10 +143,8 @@ int main(int argc, char *argv[])
 	is_valid_arg(argc, argv, &size[0]);
 	result = allocate_mem(sizeof(char) * (size[0] + size[1] + 1));
 	mul(result, argv, size);
-	if (result[size[0] + size[1] - 1] == '0')
-		result[size[0] + size[1] - 1] = '\0';
 	_print_rev_recursion(result);
 	_print("\n");
-
+	free(result);
 	return (0);
 }
