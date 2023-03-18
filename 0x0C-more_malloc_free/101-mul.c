@@ -56,18 +56,29 @@ char *allocate_mem(int size)
  */
 void is_valid_arg(int argc, char *argv[], int *sz)
 {
-	if (argc != 3 || argv[1][0] == '-' || argv[2][0] == '-' ||
-			argv[1][0] == '\0' || argv[2][0] == '\0')
+	int iszero1, iszero2;
+
+	if (argc != 3 || argv[1][0] == '\0' || argv[2][0] == '\0')
 		exit_prog();
-	for (*sz = 0; argv[1][*sz] != '\0'; (*sz)++)
+	iszero1 = iszero2 = 1;
+	for (*sz = 0; argv[1][*sz]; (*sz)++)
 	{
 		if (argv[1][*sz] < '0' || argv[1][*sz] > '9')
 			exit_prog();
+		if (iszero1 && argv[1][*sz] != '0')
+			iszero1 = 0;
 	}
 	for (*(sz + 1) = 0; argv[2][*(sz + 1)] != '\0'; *(sz + 1) += 1)
 	{
 		if (argv[2][*(sz + 1)] < '0' || argv[2][*(sz + 1)] > '9')
 			exit_prog();
+		if (iszero2 && argv[2][*(sz + 1)] != '0')
+			iszero2 = 0;
+	}
+	if (iszero1 || iszero2)
+	{
+		_print("0\n");
+		exit(0);
 	}
 }
 /**
@@ -131,17 +142,11 @@ int main(int argc, char *argv[])
 	char *result;
 
 	is_valid_arg(argc, argv, &size[0]);
-	if ((size[0] == 1 && argv[1][0] == '0') ||
-			(size[1] == 1 && argv[2][0] == '0'))
-	{
-		_print("0");
-	}
-	else
-	{
-		result = allocate_mem(sizeof(char) * (size[0] + size[1] + 1));
-		mul(result, argv, size);
-		_print_rev_recursion(result);
-	}
+	result = allocate_mem(sizeof(char) * (size[0] + size[1] + 1));
+	mul(result, argv, size);
+	_print_rev_recursion(result);
+	if (result[size[0] + size[1] - 1] == '0')
+		result[size[0] + size[1] - 1] = '\0';
 	_print("\n");
 
 	return (0);
