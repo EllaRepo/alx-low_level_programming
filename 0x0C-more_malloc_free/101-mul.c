@@ -143,12 +143,10 @@ int main(int argc, char *argv[])
 
 	is_valid_arg(argc, argv, &size[0]);
 	result = allocate_mem(sizeof(char) * (size[0] + size[1] + 1));
-	if (result == NULL)
-		exit_prog();
 	mul(result, argv, size);
-	_print_rev_recursion(result);
 	if (result[size[0] + size[1] - 1] == '0')
 		result[size[0] + size[1] - 1] = '\0';
+	_print_rev_recursion(result);
 	_print("\n");
 
 	return (0);
