@@ -106,7 +106,7 @@ void mul(char *res, char *argv[], int *sz)
 {
 	int sz1, sz2, i, j, prod, rem;
 
-	 sz2 = *(sz + 1) - 1;
+	sz2 = *(sz + 1) - 1;
 	for (j = 0; sz2 >= 0; sz2--, j++)
 	{
 		sz1 = *sz - 1, prod = rem = 0, i = j;
@@ -143,6 +143,8 @@ int main(int argc, char *argv[])
 
 	is_valid_arg(argc, argv, &size[0]);
 	result = allocate_mem(sizeof(char) * (size[0] + size[1] + 1));
+	if (result == NULL)
+		exit_prog();
 	mul(result, argv, size);
 	_print_rev_recursion(result);
 	if (result[size[0] + size[1] - 1] == '0')
