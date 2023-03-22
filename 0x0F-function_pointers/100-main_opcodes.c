@@ -24,6 +24,7 @@ int main(int argc, char *argv[])
 		printf("Error\n");
 		exit(2);
 	}
+	i = 0;
 	while (i < bytes)
 	{
 		printf("%02x ", opcode[i] & 0xFF);
