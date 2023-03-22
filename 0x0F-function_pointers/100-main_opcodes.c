@@ -27,7 +27,10 @@ int main(int argc, char *argv[])
 	i = 0;
 	while (i < bytes)
 	{
-		printf("%02x ", opcode[i] & 0xFF);
+		printf("%02x", opcode[i] & 0xFF);
+		if ((i == bytes - 1) || (opcode[i] & 0xFF) == 0xC3)
+			break;
+		printf(" ");
 		i++;
 	}
 	printf("\n");
