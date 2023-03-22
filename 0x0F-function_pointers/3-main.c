@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 	if (atoi(argv[3]) == 0 && (argv[2][0] == '/' || argv[2][0] == '%'))
 	{
 		printf("Error\n");
-		exit(99);
+		exit(100);
 	}
 	result = 0;
 	result = func_p(atoi(argv[1]), atoi(argv[3]));
