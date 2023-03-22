@@ -15,6 +15,8 @@ int (*get_op_func(char *s))(int, int)
 	op_t *ops, *tmp;
 
 	ops = malloc(sizeof(op_t) * 6);
+	if (ops == NULL)
+		return (NULL);
 
 	ops[0].op = "+", ops[0].f = op_add;
 	ops[1].op = "-", ops[1].f = op_sub;
