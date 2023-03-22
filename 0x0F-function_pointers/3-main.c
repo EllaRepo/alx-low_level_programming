@@ -25,6 +25,11 @@ int main(int argc, char *argv[])
 		printf("Error\n");
 		exit(99);
 	}
+	if (atoi(argv[3]) == 0)
+	{
+		printf("Error\n");
+		exit(99);
+	}
 	result = 0;
 	result = func_p(atoi(argv[1]), atoi(argv[3]));
 	printf("%d\n", result);
