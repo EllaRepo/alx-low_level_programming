@@ -19,13 +19,13 @@ int main(int argc, char *argv[])
 		printf("Error\n");
 		exit(98);
 	}
-	func_p =  get_op_func(argv[2]);
-	if (func_p == NULL)
+	if (atoi(argv[3]) == 0 && (argv[2][0] == '/' || argv[2][0] == '%'))
 	{
 		printf("Error\n");
 		exit(99);
 	}
-	if (atoi(argv[3]) == 0)
+	func_p =  get_op_func(argv[2]);
+	if (func_p == NULL)
 	{
 		printf("Error\n");
 		exit(99);
