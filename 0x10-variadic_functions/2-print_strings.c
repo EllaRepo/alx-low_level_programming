@@ -24,9 +24,9 @@ void print_strings(const char *separator, const unsigned int n, ...)
 		for (i = 0; i < n; i++)
 		{
 			cp = va_arg(ap, char *);
-			cp = (cp == NULL || *cp == '\0') ? "(nil)" : cp;
+			cp = cp ? cp : "(nil)";
 			printf("%s", cp);
-			if (separator != NULL && (i < n - 1))
+			if (separator && (i < n - 1))
 				printf("%s", separator);
 		}
 		va_end(ap);
