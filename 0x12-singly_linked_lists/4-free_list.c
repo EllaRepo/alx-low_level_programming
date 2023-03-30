@@ -23,6 +23,8 @@ void _free(list_t *head)
  */
 void free_list(list_t *head)
 {
+	if (!head)
+		return;
 	_free(head);
 	free(head);
 }
