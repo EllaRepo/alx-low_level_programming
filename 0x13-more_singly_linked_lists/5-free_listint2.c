@@ -22,8 +22,9 @@ void _free_listint(listint_t *head)
  */
 void free_listint2(listint_t **head)
 {
-	listint_t *hd = *head;
-
-	_free_listint(hd);
-	*head = NULL;
+	if (*head)
+	{
+		_free_listint(*head);
+		*head = NULL;
+	}
 }
