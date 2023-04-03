@@ -13,7 +13,9 @@ listint_t *reverse_listint(listint_t **head)
 {
 	listint_t *node_ptr1, *node_ptr2;
 
-	if (!head || !((*head)->next))
+	if (!head)
+		return (NULL);
+	if (!((*head)->next))
 		return (*head);
 
 	node_ptr2 = (*head)->next;
