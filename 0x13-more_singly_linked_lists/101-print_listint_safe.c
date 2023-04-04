@@ -13,6 +13,7 @@ void free_listint_ptr(listint_ptr_t *head)
 	if (head)
 	{
 		free_listint_ptr(head->next);
+		free(head->list_ptr);
 		free(head);
 	}
 }
@@ -36,7 +37,7 @@ size_t print_listint_safe(const listint_t *head)
 			if ((void *) head == tmp->list_ptr)
 			{
 				printf("-> [%p] %i\n", (void *) head, head->n);
-				free_listint_ptr(tmp);
+				free_listint_ptr(node_ptr);
 				return (i);
 			}
 			tmp = tmp->next;
