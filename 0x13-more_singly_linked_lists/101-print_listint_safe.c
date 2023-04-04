@@ -10,19 +10,17 @@
  */
 size_t print_listint_safe(const listint_t *head)
 {
-	const listint_t *node_ptr = head, *prev = head;
-	size_t i;
+	const listint_t *prev = head;
+	size_t i = 0;
 
-	for (i = 0; node_ptr; i++)
+	for (; head != NULL; prev = head, head = head->next, i++)
 	{
-		if (prev < node_ptr)
+		if (prev < head)
 		{
-			printf("-> [%p] %i\n", (void *) node_ptr, node_ptr->n);
+			printf("-> [%p] %i\n", (void *) head, head->n);
 			exit(98);
 		}
-		printf("[%p] %i\n", (void *) node_ptr, node_ptr->n);
-		prev = node_ptr;
-		node_ptr = node_ptr->next;
+		printf("[%p] %i\n", (void *) head, head->n);
 	}
 	return (i);
 }
