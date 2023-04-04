@@ -10,11 +10,19 @@
  */
 void free_listint_ptr(listint_ptr_t *head)
 {
+	listint_ptr_t *hd, *tmp;
+
 	if (head)
 	{
-		free_listint_ptr(head->next);
-		free(head->list_ptr);
-		free(head);
+		hd = head;
+		while (hd)
+		{
+			tmp = hd->next;
+			free(hd->list_ptr);
+			free(hd);
+			hd = tmp;
+		}
+		head = NULL;
 	}
 }
 /**
