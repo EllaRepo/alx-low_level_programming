@@ -8,10 +8,10 @@
  *
  * Return: None
  */
-void _free_listint(listint_t *head)
+void _free_listint2(listint_t *head)
 {
 	if (head->next)
-		_free_listint(head->next);
+		_free_listint2(head->next);
 	free(head);
 }
 /**
@@ -24,7 +24,7 @@ void free_listint2(listint_t **head)
 {
 	if (head)
 	{
-		_free_listint(*head);
+		_free_listint2(*head);
 		*head = NULL;
 	}
 }
