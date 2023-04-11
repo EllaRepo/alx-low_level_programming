@@ -186,10 +186,10 @@ void print_abi_ver(char abi_ver)
 */
 void print_type(char *buff)
 {
-	unsigned int type;
+	char type = buff[0x10];
 	char *type_name = NULL;
 
-	type = buff[5] == 0x01 ? buff[0x10] : buff[0x11];
+	type = (buff[5] == 0x01) ? buff[0x10] : buff[0x11];
 	switch (type)
 	{
 		case 0x00:
