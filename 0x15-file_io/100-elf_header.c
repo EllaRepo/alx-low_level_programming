@@ -179,28 +179,6 @@ void print_abi_ver(char abi_ver)
 	printf("%d\n", abi_ver);
 }
 /**
- * get_type_value - gets the type value
- * @buff: buffer
- *
- * Return: the value of type
- */
-unsigned int get_type_value(char *buff)
-{
-	unsigned int value = 0;
-
-	if (buff[5] == 0x01)
-	{
-		value = buff[0x11] << 8;
-		value |= buff[0x10];
-	}
-	else if (buff[5] == 0x02)
-	{
-		value = buff[0x10] << 8;
-		value |= buff[0x11];
-	}
-	return (value);
-}
-/**
  * print_type - prints the type
  * @buff: buffer
  *
@@ -211,22 +189,22 @@ void print_type(char *buff)
 	unsigned int type;
 	char *type_name = NULL;
 
-	type = get_type_value(buff);
+	type = buff[5] == 0x01 ? buff[0x10] : buff[0x11];
 	switch (type)
 	{
-		case 0x0000:
+		case 0x00:
 			type_name = "NONE (None)";
 			break;
-		case 0x0001:
+		case 0x01:
 			type_name = "REL (Relocatable file)";
 			break;
-		case 0x0002:
+		case 0x02:
 			type_name = "EXEC (Executable file)";
 			break;
-		case 0x0003:
+		case 0x03:
 			type_name = "DYN (Shared object file)";
 			break;
-		case 0x0004:
+		case 0x04:
 			type_name = "CORE (Core file)";
 			break;
 		default:
@@ -236,14 +214,7 @@ void print_type(char *buff)
 	if (type_name)
 		printf("%s\n", type_name);
 	else
-	{
-		if (type >= 0xFE00 && type <= 0xFEFF)
-			printf("OS Specific: (%x)\n", type);
-		else if (type >= 0xFF00 && type <= 0xFFFF)
-			printf("Processor specific: (%x)\n", type);
-		else
-			printf("<unknown>: %x\n", type);
-	}
+		printf("<unknown>: %x\n", type);
 }
 /**
  * print_entry - prints entry
