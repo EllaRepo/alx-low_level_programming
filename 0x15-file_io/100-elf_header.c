@@ -229,7 +229,6 @@ void _print_entry(char *buff)
 	if (buff[4] + '0' == '1')
 	{
 		start = 22;
-		printf("80");
 		for (i = start; i <= 26; i++)
 		{
 			if (buff[i] > 0)
