@@ -217,6 +217,43 @@ void print_type(char *buff)
 		printf("<unknown>: %x\n", type);
 }
 /**
+ * _print_entry - prints entry of big endian representation
+ * @buff: buffer
+ *
+ * Return: None
+*/
+void _print_entry(char *buff)
+{
+	int start, i;
+
+	if (buff[4] + '0' == '1')
+	{
+		start = 22;
+		printf("80");
+		for (i = start; i <= 26; i++)
+		{
+			if (buff[i] > 0)
+				printf("%x", buff[i]);
+			else if (buff[i] < 0)
+				printf("%x", 256 + buff[i]);
+		}
+		if (buff[7] == 6)
+			printf("00");
+	}
+	else if (buff[4] + '0' == '2')
+	{
+		start = 24;
+		for (i = start; i < 27; i++)
+		{
+			if (buff[i] >= 0)
+				printf("%02x", buff[i]);
+			else if (buff[i] < 0)
+				printf("%02x", 256 + buff[i]);
+		}
+	}
+	printf("\n");
+}
+/**
  * print_entry - prints entry
  * @buff: buffer
  *
@@ -227,6 +264,11 @@ void print_entry(char *buff)
 	int start, i;
 
 	printf("  Entry point address:               0x");
+	if (buff[5] == 0x02)
+	{
+		_print_entry(buff);
+		return;
+	}
 	if (buff[4] + '0' == '1')
 	{
 		start = 26;
