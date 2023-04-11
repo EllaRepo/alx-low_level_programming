@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include "main.h"
+#include <elf.h>
+
 /**
  * log_error - prints errors
  * @err_code: error code
@@ -56,6 +57,8 @@ void is_elf(char *buff, char *argv[])
 		if (magic[i] != buff[i])
 			log_error(3, argv, 0);
 	}
+	if ((buff[4] + '0') == '0')
+		exit(98);
 }
 /**
  * print_magic_no - prints the magic number
@@ -111,11 +114,10 @@ void print_data(char data)
  */
 void print_ver(char ver)
 {
-	printf("  Version:                           ");
-	if (ver == 0x01)
-		printf("1 (current)\n");
-	else if (ver == 0x00)
-		printf("0 (Invalid)\n");
+	printf("  Version:                           %d", (int) ver);
+	if ((int) ver == EV_CURRENT)
+		printf(" (current)");
+	printf("\n");
 }
 /**
  * get_osabi - returns the name of osabi
@@ -174,7 +176,7 @@ void print_osabi(char osabi)
 void print_abi_ver(char abi_ver)
 {
 	printf("  ABI Version:                       ");
-	printf("%x\n", abi_ver);
+	printf("%d\n", abi_ver);
 }
 /**
  * get_type_value - gets the type value
@@ -254,9 +256,10 @@ void print_entry(char *buff)
 	int start, i;
 
 	printf("  Entry point address:               0x");
-	if (buff[5] == 0x01)
+	if (buff[4] + '0' == '1')
 	{
 		start = 26;
+		printf("80");
 		for (i = start; i >= 22; i--)
 		{
 			if (buff[i] > 0)
@@ -267,7 +270,7 @@ void print_entry(char *buff)
 		if (buff[7] == 6)
 			printf("00");
 	}
-	else if (buff[5] == 0x02)
+	else if (buff[4] + '0' == '2')
 	{
 		start = 26;
 		for (i = start; i > 23; i--)
