@@ -263,7 +263,7 @@ void print_entry(char *buff)
 	int start, i;
 
 	printf("  Entry point address:               0x");
-	if (buff[5] == 0x02)
+	if (buff[5] + '0' == '2')
 	{
 		_print_entry(buff);
 		return;
