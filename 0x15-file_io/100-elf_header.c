@@ -226,7 +226,7 @@ void _print_entry(char *buff)
 {
 	int start, i;
 
-	if (buff[4] + '0' == '1')
+	if (buff[4] + '0' == '2')
 	{
 		start = 22;
 		for (i = start; i <= 26; i++)
@@ -239,7 +239,7 @@ void _print_entry(char *buff)
 		if (buff[7] == 6)
 			printf("00");
 	}
-	else if (buff[4] + '0' == '2')
+	else if (buff[4] + '0' == '1')
 	{
 		start = 24;
 		for (i = start; i < 27; i++)
