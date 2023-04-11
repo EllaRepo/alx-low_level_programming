@@ -290,9 +290,9 @@ void print_entry(char *buff)
  */
 int main(int argc, char *argv[])
 {
-	char buff[32];
+	char buff[27];
 	ssize_t rd;
-	int f_src, i;
+	int f_src;
 
 	if (argc != 2)
 	{
@@ -308,14 +308,6 @@ int main(int argc, char *argv[])
 	if (rd == -1)
 		log_error(2, argv, 0);
 	is_elf(buff, argv);
-
-	for (i = 0; i < 32; i++)
-	{
-		if (i % 8 == 0)
-			printf("\n");
-		printf("%02x ", buff[i]);
-	}
-	printf("\n");
 	print_magic_no(buff);
 	print_class(buff[4]);
 	print_data(buff[5]);
