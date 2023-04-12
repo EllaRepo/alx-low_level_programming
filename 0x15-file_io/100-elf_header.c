@@ -42,31 +42,31 @@ void log_error(int err_code, char *argv[], int fd)
 }
 /**
  * is_elf - checks for elf file
- * @buff: buffer
+ * @elf_header: points elf header
  * @argv: arguments
  *
  * Return: None.
  */
-void is_elf(char *buff, char *argv[])
+void is_elf(Elf64_Ehdr *elf_header, char *argv[])
 {
 	int i;
 	char magic[] = {0x7f, 0x45, 0x4c, 0x46};
 
 	for (i = 0; i < 4; i++)
 	{
-		if (magic[i] != buff[i])
+		if (magic[i] != elf_header->e_ident[i])
 			log_error(3, argv, 0);
 	}
-	if ((buff[4] + '0') == '0')
+	if ((elf_header->e_ident[4] + '0') == '0')
 		exit(98);
 }
 /**
  * print_magic_no - prints the magic number
- * @buff: buffer
+ * @elf_header: points to elf header
  *
  * Return: None
  */
-void print_magic_no(char *buff)
+void print_magic_no(Elf64_Ehdr *elf_header)
 {
 	int i;
 
@@ -74,7 +74,7 @@ void print_magic_no(char *buff)
 	printf("  Magic:  ");
 	for (i = 0; i < 16; i++)
 	{
-		printf(" %02x", buff[i]);
+		printf(" %02x", elf_header->e_ident[i]);
 	}
 	printf("\n");
 }
@@ -84,7 +84,7 @@ void print_magic_no(char *buff)
  *
  * Return: None
  */
-void print_class(char class)
+void print_class(unsigned char class)
 {
 	printf("  Class:                             ");
 	if (class == 0x01)
@@ -98,7 +98,7 @@ void print_class(char class)
  *
  * Return: None
  */
-void print_data(char data)
+void print_data(unsigned char data)
 {
 	printf("  Data:                              ");
 	if (data == 0x01)
@@ -112,7 +112,7 @@ void print_data(char data)
  *
  * Return: None
  */
-void print_ver(char ver)
+void print_ver(unsigned char ver)
 {
 	printf("  Version:                           %d", (int) ver);
 	if ((int) ver == EV_CURRENT)
@@ -125,7 +125,7 @@ void print_ver(char ver)
  *
  * Return: name of osabi
 */
-char *get_osabi(char osabi)
+char *get_osabi(unsigned char osabi)
 {
 	switch (osabi)
 	{
@@ -155,7 +155,7 @@ char *get_osabi(char osabi)
  *
  * Return: None
  */
-void print_osabi(char osabi)
+void print_osabi(unsigned char osabi)
 {
 	char *osabi_name;
 
@@ -172,23 +172,24 @@ void print_osabi(char osabi)
  *
  * Return: None
  */
-void print_abi_ver(char abi_ver)
+void print_abi_ver(unsigned char abi_ver)
 {
 	printf("  ABI Version:                       ");
 	printf("%d\n", abi_ver);
 }
 /**
  * print_type - prints the type
- * @buff: buffer
+ * @elf_header: points to elf header
  *
  * Return: None
 */
-void print_type(char *buff)
+void print_type(Elf64_Ehdr *elf_header)
 {
-	char type = buff[0x10];
+	unsigned char type = elf_header->e_ident[0x10];
 	char *type_name = NULL;
 
-	type = (buff[5] == 0x01) ? buff[0x10] : buff[0x11];
+	type = (elf_header->e_ident[5] == 0x01) ?
+		elf_header->e_ident[0x10] : elf_header->e_ident[0x11];
 	switch (type)
 	{
 		case 0x00:
@@ -216,62 +217,29 @@ void print_type(char *buff)
 		printf("<unknown>: %x\n", type);
 }
 /**
- * _print_entry - prints entry
- * @buff: buffer
- * @start: the start of the entry
- * @end: the end of the entry
- *
- * Return: None
-*/
-void _print_entry(char *buff, int start, int end)
-{
-	int i;
-
-	if (start < end)
-	{
-		for (i = start; i < end; i++)
-		{
-			if (buff[i] > 0)
-				printf("%x", buff[i]);
-			else if (buff[i] < 0)
-				printf("%x", 256 + buff[i]);
-		}
-	}
-	else
-	{
-		for (i = start; i > end; i--)
-		{
-			if (buff[i] > 0)
-				printf("%x", buff[i]);
-			else if (buff[i] < 0)
-				printf("%x", 256 + buff[i]);
-		}
-	}
-}
-/**
  * print_entry - prints entry
- * @buff: buffer
+ * @elf_header: points to elf header
  *
  * Return: None
 */
-void print_entry(char *buff)
+void print_entry(Elf64_Ehdr *elf_header)
 {
-	printf("  Entry point address:               0x");
-	if (buff[4] == 0x01)
+	unsigned long int entry;
+
+	printf("  Entry point address:               ");
+
+	entry = elf_header->e_entry;
+	if (elf_header->e_ident[5] == 0x02)
 	{
-		if (buff[5] == 0x01)
-			_print_entry(buff, 27, 23);
-		else if (buff[5] == 0x02)
-			_print_entry(buff, 24, 28);
+		entry = ((entry << 8) & 0xFF00FF00) |
+			  ((entry >> 8) & 0xFF00FF);
+		entry = (entry << 16) | (entry >> 16);
 	}
-	else if (buff[4] == 0x02)
-	{
-		if (buff[5] == 0x01)
-			_print_entry(buff, 31, 23);
-		else if (buff[5] == 0x02)
-			_print_entry(buff, 24, 32);
-	}
-	printf("\n");
+	if (elf_header->e_ident[4] == 0x01)
+		printf("%#x\n", (unsigned int)entry);
+
+	else
+		printf("%#lx\n", entry);
 }
 /**
  * main -  displays the information contained in the ELF header
@@ -283,7 +251,7 @@ void print_entry(char *buff)
  */
 int main(int argc, char *argv[])
 {
-	char buff[32];
+	Elf64_Ehdr *elf_header;
 	ssize_t rd;
 	int f_src;
 
@@ -295,19 +263,25 @@ int main(int argc, char *argv[])
 	f_src = open(argv[1], O_RDONLY);
 	if (f_src < 0)
 		log_error(1, argv, 0);
+	elf_header = malloc(sizeof(Elf64_Ehdr));
+	if (elf_header == NULL)
+	{
+		close(f_src);
+		log_error(1, argv, 0);
+	}
 	lseek(f_src, 0, SEEK_SET);
-	rd = read(f_src, buff, 32);
+	rd = read(f_src, elf_header, sizeof(Elf64_Ehdr));
 	if (rd == -1)
 		log_error(2, argv, 0);
-	is_elf(buff, argv);
-	print_magic_no(buff);
-	print_class(buff[4]);
-	print_data(buff[5]);
-	print_ver(buff[6]);
-	print_osabi(buff[7]);
-	print_abi_ver(buff[8]);
-	print_type(buff);
-	print_entry(buff);
+	is_elf(elf_header, argv);
+	print_magic_no(elf_header);
+	print_class(elf_header->e_ident[4]);
+	print_data(elf_header->e_ident[5]);
+	print_ver(elf_header->e_ident[6]);
+	print_osabi(elf_header->e_ident[7]);
+	print_abi_ver(elf_header->e_ident[8]);
+	print_type(elf_header);
+	print_entry(elf_header);
 
 	close(f_src);
 	return (0);
