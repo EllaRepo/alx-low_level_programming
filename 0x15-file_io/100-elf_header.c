@@ -129,18 +129,17 @@ char *get_osabi(char osabi)
 {
 	switch (osabi)
 	{
-		case 0x00:	return "UNIX - System V";
-		case 0x01:	return "UNIX - HP-UX";
-		case 0x02:	return "UNIX - NetBSD";
-		case 0x03:	return "Linux";
-		case 0x04:	return "UNIX - GNU Hurd";
-		case 0x06:	return "UNIX - Solaris";
-		case 0x07:	return "UNIX - AIX";
-		case 0x08:	return "UNIX - IRIX";
-		case 0x09:	return "UNIX - FreeBSD";
-		case 0x0A:	return "UNIX - TRU64";
-		case 0x0B:	return "Novell - Modesto";
-		case 0x0C:	return "Novell - Modesto";
+		case ELFOSABI_NONE:	return "UNIX - System V";
+		case ELFOSABI_HPUX:	return "UNIX - HP-UX";
+		case ELFOSABI_NETBSD:	return "UNIX - NetBSD";
+		case ELFOSABI_GNU:	return "UNIX - GNU";
+		case ELFOSABI_SOLARIS:	return "UNIX - Solaris";
+		case ELFOSABI_AIX:	return "UNIX - AIX";
+		case ELFOSABI_IRIX:	return "UNIX - IRIX";
+		case ELFOSABI_FREEBSD:	return "UNIX - FreeBSD";
+		case ELFOSABI_TRU64:	return "UNIX - TRU64";
+		case ELFOSABI_MODESTO:	return "Novell - Modesto";
+		case ELFOSABI_OPENBSD:	return "UNIX - OpenBSD";
 		case 0x0D:	return "VMS - OpenVMS";
 		case 0x0E:	return "HP - Non-Stop Kernel";
 		case 0x0F:	return "AROS";
@@ -217,40 +216,37 @@ void print_type(char *buff)
 		printf("<unknown>: %x\n", type);
 }
 /**
- * _print_entry - prints entry of big endian representation
+ * _print_entry - prints entry
  * @buff: buffer
+ * @start: the start of the entry
+ * @end: the end of the entry
  *
  * Return: None
 */
-void _print_entry(char *buff)
+void _print_entry(char *buff, int start, int end)
 {
-	int start, i;
+	int i;
 
-	if (buff[4] + '0' == '1')
+	if (start < end)
 	{
-		start = 22;
-		for (i = start; i <= 26; i++)
+		for (i = start; i < end; i++)
 		{
 			if (buff[i] > 0)
 				printf("%x", buff[i]);
 			else if (buff[i] < 0)
 				printf("%x", 256 + buff[i]);
 		}
-		if (buff[7] == 6)
-			printf("00");
 	}
-	else if (buff[4] + '0' == '2')
+	else
 	{
-		start = 24;
-		for (i = start; i < 27; i++)
+		for (i = start; i > end; i--)
 		{
-			if (buff[i] >= 0)
-				printf("%02x", buff[i]);
+			if (buff[i] > 0)
+				printf("%x", buff[i]);
 			else if (buff[i] < 0)
-				printf("%02x", 256 + buff[i]);
+				printf("%x", 256 + buff[i]);
 		}
 	}
-	printf("\n");
 }
 /**
  * print_entry - prints entry
@@ -260,38 +256,20 @@ void _print_entry(char *buff)
 */
 void print_entry(char *buff)
 {
-	int start, i;
-
 	printf("  Entry point address:               0x");
-	if (buff[5] + '0' == '2')
+	if (buff[4] == 0x01)
 	{
-		_print_entry(buff);
-		return;
+		if (buff[5] == 0x01)
+			_print_entry(buff, 27, 23);
+		else if (buff[5] == 0x02)
+			_print_entry(buff, 24, 28);
 	}
-	if (buff[4] + '0' == '1')
+	else if (buff[4] == 0x02)
 	{
-		start = 26;
-		printf("80");
-		for (i = start; i >= 22; i--)
-		{
-			if (buff[i] > 0)
-				printf("%x", buff[i]);
-			else if (buff[i] < 0)
-				printf("%x", 256 + buff[i]);
-		}
-		if (buff[7] == 6)
-			printf("00");
-	}
-	else if (buff[4] + '0' == '2')
-	{
-		start = 26;
-		for (i = start; i > 23; i--)
-		{
-			if (buff[i] >= 0)
-				printf("%02x", buff[i]);
-			else if (buff[i] < 0)
-				printf("%02x", 256 + buff[i]);
-		}
+		if (buff[5] == 0x01)
+			_print_entry(buff, 31, 23);
+		else if (buff[5] == 0x02)
+			_print_entry(buff, 24, 32);
 	}
 	printf("\n");
 }
@@ -305,7 +283,7 @@ void print_entry(char *buff)
  */
 int main(int argc, char *argv[])
 {
-	char buff[27];
+	char buff[32];
 	ssize_t rd;
 	int f_src;
 
@@ -314,12 +292,11 @@ int main(int argc, char *argv[])
 		dprintf(STDERR_FILENO, "%s\n", "Usage: elf_header elf_filename");
 		exit(98);
 	}
-
 	f_src = open(argv[1], O_RDONLY);
 	if (f_src < 0)
 		log_error(1, argv, 0);
 	lseek(f_src, 0, SEEK_SET);
-	rd = read(f_src, buff, 27);
+	rd = read(f_src, buff, 32);
 	if (rd == -1)
 		log_error(2, argv, 0);
 	is_elf(buff, argv);
