@@ -16,6 +16,7 @@ dlistint_t *insert_dnodeint_at_index(dlistint_t **h, unsigned int idx, int n)
 	dlistint_t *node_ptr, *tmp;
 	unsigned int i = 1;
 
+	tmp = NULL;
 	if (idx == 0)
 	{
 		tmp = add_dnodeint(h, n);
@@ -45,11 +46,11 @@ dlistint_t *insert_dnodeint_at_index(dlistint_t **h, unsigned int idx, int n)
 				{
 					tmp = add_dnodeint_end(h, n);
 				}
-				return (tmp);
+				break;
 			}
 			node_ptr = node_ptr->next;
 			i++;
 		}
 	}
-	return (NULL);
+	return (tmp);
 }
