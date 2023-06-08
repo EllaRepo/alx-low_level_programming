@@ -13,10 +13,7 @@ void hash_table_print(const hash_table_t *ht)
 	char *sepa;
 
 	if (ht == NULL)
-	{
-		printf("{}\n");
 		return;
-	}
 	sepa = "";
 	printf("{");
 	for (index = 0; index < ht->size; index++)
